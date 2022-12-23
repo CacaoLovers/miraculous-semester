@@ -1,4 +1,4 @@
-﻿package protocol.packets;
+package protocol.packets;
 
 import javafx.scene.input.KeyCode;
 import protocol.PacketTypes;
