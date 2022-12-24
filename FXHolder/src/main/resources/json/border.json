@@ -1,0 +1,50 @@
+[
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 100
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 200
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 300
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 100,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 100,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 200,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 300,
+    "posY": 0
+  }
+]

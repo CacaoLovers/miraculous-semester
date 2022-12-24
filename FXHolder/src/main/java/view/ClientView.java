@@ -1,5 +1,6 @@
 package view;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import controllers.MovePlayer;
 import entity.Field;
 import entity.FieldCell;
@@ -10,92 +11,67 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import lombok.Data;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
-
+@Data
 public class ClientView extends Application {
 
+    private static final String PATH_GROUND_SPRITE = "json/ground.json";
+    private static final String PATH_WALL_SPRITE = "json/wall.json";
+    private static final String PATH_BORDER_SPRITE = "json/border.json";
+    private static final String PATH_PLAYER_IMAGE = "images/cat.png";
+
     private Field field;
+    private MovePlayer movePlayer;
     private Pane fieldPane;
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void start(Stage stage) throws IOException {
-
         field = new Field();
-        createGround();
-        createBorder();
-        createWall();
 
-
-        Player player = new Player(new Rectangle(120, 120, 80, 80), new Image("cat.png"));
-
-        Rectangle collisionPlayer = new Rectangle(player.getBody().getWidth(), player.getBody().getHeight());
-
-
+        field.getFieldCells().addAll(createFieldCell(PATH_GROUND_SPRITE));
+        field.getFieldCells().addAll(createFieldCell(PATH_BORDER_SPRITE));
+        field.getFieldCells().addAll(createFieldCell(PATH_WALL_SPRITE));
 
         fieldPane = new Pane();
-
-        collisionPlayer.setOpacity(0.0);
-
-
         for(FieldCell rectangleHandler: field.getFieldCells()){
             fieldPane.getChildren().add(rectangleHandler.getRectangle());
         }
 
-        fieldPane.getChildren().add(player.getBody());
-        fieldPane.getChildren().add(collisionPlayer);
+        createPlayer();
 
         Scene scene = new Scene(fieldPane);
-        MovePlayer movePlayer = new MovePlayer(player, collisionPlayer, this);
         scene.setOnKeyPressed(movePlayer);
         stage.setScene(scene);
         stage.show();
     }
 
+    public List<FieldCell> createFieldCell(String type){
+        try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(type)){
 
-    public void createWall(){
-        FieldCell wall1 = new FieldCell(new Rectangle(100,100), new Image("brick.png"), 2, 200, 100);
-        field.getFieldCells().add(wall1);
+            return Arrays.asList(mapper.readValue(in, FieldCell[].class));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void createBorder(){
-        FieldCell border1 = new FieldCell(new Rectangle(100,100), new Image("stone.png"), 2, 0, 0);
-        FieldCell border2 = new FieldCell(new Rectangle(100,100), new Image("stone.png"), 2, 100, 0);
-        FieldCell border3 = new FieldCell(new Rectangle(100,100), new Image("stone.png"), 2, 0, 100);
-        FieldCell border4 = new FieldCell(new Rectangle(100,100), new Image("stone.png"), 2, 200, 0);
-        FieldCell border5 = new FieldCell(new Rectangle(100,100), new Image("stone.png"), 2, 200, 0);
+    public void createPlayer(){
+        Player player = new Player(new Rectangle(120, 120, 80, 80), new Image(PATH_PLAYER_IMAGE));
 
-        field.getFieldCells().add(border1);
-        field.getFieldCells().add(border2);
-        field.getFieldCells().add(border3);
-        field.getFieldCells().add(border4);
-        field.getFieldCells().add(border5);
-    }
+        Rectangle collisionPlayer = new Rectangle(player.getBody().getWidth(), player.getBody().getHeight());
+        collisionPlayer.setOpacity(0.0);
 
-    public void createGround(){
-        FieldCell ground1 = new FieldCell(new Rectangle(100,100), new Image("grass.png"), 1, 100, 100);
-        FieldCell ground2 = new FieldCell(new Rectangle(100,100), new Image("grass.png"), 1, 0, 0);
-        FieldCell ground3 = new FieldCell(new Rectangle(100,100), new Image("grass.png"), 1, 0, 100);
-        FieldCell ground4 = new FieldCell(new Rectangle(100,100), new Image("grass.png"), 1, 100, 0);
-        FieldCell ground5 = new FieldCell(new Rectangle(100,100), new Image("grass.png"), 1, 200, 0);
-        FieldCell ground6 = new FieldCell(new Rectangle(100,100), new Image("grass.png"), 1, 200, 100);
-        FieldCell ground7 = new FieldCell(new Rectangle(100,100), new Image("grass.png"), 1, 0, 200);
-        FieldCell ground8 = new FieldCell(new Rectangle(100,100), new Image("grass.png"), 1, 100, 200);
-        FieldCell ground9 = new FieldCell(new Rectangle(100,100), new Image("grass.png"), 1, 200, 200);
-        field.getFieldCells().add(ground1);
-        field.getFieldCells().add(ground2);
-        field.getFieldCells().add(ground3);
-        field.getFieldCells().add(ground4);
-        field.getFieldCells().add(ground5);
-        field.getFieldCells().add(ground6);
-        field.getFieldCells().add(ground7);
-        field.getFieldCells().add(ground8);
-        field.getFieldCells().add(ground9);
-    }
+        fieldPane.getChildren().add(player.getBody());
+        fieldPane.getChildren().add(collisionPlayer);
 
-    public Field getField() {
-        return field;
+        movePlayer = new MovePlayer(player, collisionPlayer, this);
     }
 
     public static void showView(){
