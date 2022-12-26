@@ -30,6 +30,7 @@ public class ClientView extends Application {
     private MovePlayer movePlayer;
     private Pane fieldPane;
     private ObjectMapper mapper = new ObjectMapper();
+    private int[] coordsSpawnPosition = new int[2];
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -74,7 +75,8 @@ public class ClientView extends Application {
         movePlayer = new MovePlayer(player, collisionPlayer, this);
     }
 
-    public static void showView(){
+    public void showView(int[] coordsForSpawn){
+        coordsSpawnPosition = coordsForSpawn;
         launch();
     }
 

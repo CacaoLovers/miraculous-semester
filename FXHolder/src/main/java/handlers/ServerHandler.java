@@ -1,5 +1,7 @@
 package handlers;
 
+import protocol.packets.Packet;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,13 +13,15 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class ServerHandler implements Runnable{
     private Integer port;
     private ServerSocket serverSocket;
-    //private ArrayList<ClientHandler> clientSocket;
+    private ArrayList<Socket> socketList = new ArrayList<>();
+
     private Socket clientSocket;
     private ThreadPoolExecutor serverPool;
     private InputStream inputStream;
     private OutputStream outputStream;
 
     private static int countClient = 0;
+
 
     private ServerHandler() {}
 
@@ -33,28 +37,23 @@ public class ServerHandler implements Runnable{
         }
     }
 
-    public void start(){
-
-        System.out.println("Сервер успешно запущен на порту " + this.port);
-        System.out.println("Ожидание подключения игроков..");
-
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
     @Override
     public void run() {
         try {
             clientSocket = serverSocket.accept();
-            System.out.println("Клиент - " + ++countClient + " подключился");
+            System.out.println("Клиент - " + countClient + " подключился");
             outputStream = clientSocket.getOutputStream();
             inputStream = clientSocket.getInputStream();
+            outputStream.write(countClient++);
+            outputStream.flush();
 
-            while (true){
+            while (!serverSocket.isClosed()){
 
-                System.out.println(inputStream.read());
+                if(!socketList.contains(clientSocket)){
+                    socketList.add(clientSocket);
+                }
+
+                System.out.println(readInput(clientSocket.getInputStream()));
 
                 outputStream.write(null);
                 outputStream.flush();
@@ -65,4 +64,36 @@ public class ServerHandler implements Runnable{
             throw new RuntimeException(e);
         }
     }
+
+
+
+
+    private byte[] readInput(InputStream stream) throws IOException {
+        int b;
+        byte[] buffer = new byte[10];
+        int counter = 0;
+        while ((b = stream.read()) > -1) {
+            buffer[counter++] = (byte) b;
+            System.out.println(buffer);
+            if (counter >= buffer.length) {
+                buffer = extendArray(buffer);
+            }
+            if (counter > 1 && Packet.isEndOfPacket(buffer, counter - 1)) {
+                break;
+            }
+        }
+        byte[] data = new byte[counter];
+        System.arraycopy(buffer, 0, data, 0, counter);
+        return data;
+    }
+
+    private byte[] extendArray(byte[] oldArray) {
+        int oldSize = oldArray.length;
+        byte[] newArray = new byte[oldSize * 2];
+        System.arraycopy(oldArray, 0, newArray, 0, oldSize);
+        return newArray;
+    }
+
+
+
 }

@@ -27,4 +27,8 @@ public abstract class Packet {
         }
         return data[2];
     }
+
+    public static boolean isEndOfPacket(byte[] data, int counter){
+        return data[counter - 1] == FOOTER_2 && data[counter - 2] == FOOTER_1;
+    }
 }
