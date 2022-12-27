@@ -2,7 +2,9 @@ package handlers;
 
 import handlers.sockets.ClientSocket;
 import protocol.packets.HandshakePacket;
+import protocol.packets.MovePacket;
 import protocol.packets.Packet;
+import services.GameActionService;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +26,7 @@ public class ServerHandler implements Runnable{
     private OutputStream outputStream;
 
     private static int countClient = 0;
+    private GameActionService gameActionService;
 
 
 
@@ -36,6 +39,7 @@ public class ServerHandler implements Runnable{
             server.port = port;
             server.serverSocket = new ServerSocket(port);
             server.serverPool = serverPool;
+            server.gameActionService = new GameActionService(server);
             return server;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -45,13 +49,11 @@ public class ServerHandler implements Runnable{
     @Override
     public void run() {
         try {
-            clientSocket = serverSocket.accept();
-            System.out.println("Клиент - " + countClient + " подключился");
-            outputStream = clientSocket.getOutputStream();
-            inputStream = clientSocket.getInputStream();
-            HandshakePacket handshakePacket = new HandshakePacket((byte)countClient++);
-            outputStream.write(handshakePacket.toByteArray());
-            outputStream.flush();
+            if(socketList.size() <= MAX_PLAYERS) {
+                clientSocket = serverSocket.accept();
+            } else {
+                return;
+            }
 
             while (!serverSocket.isClosed()){
 
@@ -59,13 +61,41 @@ public class ServerHandler implements Runnable{
                     socketList.add(clientSocket);
                 }
 
-                sendMessageToAllClients(new HandshakePacket((byte) 0).toByteArray());
+                connectionClient();
+
+
+                    sendMessage(clientSocket, new HandshakePacket((byte) 1).toByteArray());
+
+                    byte[] dataFromClient = readInput(inputStream);
+
+                    if (dataFromClient.length < 5) {
+                        return;
+                    }
+
+                    switch (dataFromClient[2]) {
+                        case 2:
+                            gameActionService.movePlayer(MovePacket.fromByteArray(dataFromClient));
+                    }
+
 
                 /*outputStream.write(null);
                 outputStream.flush();
                 serverPool.notifyAll();*/
             }
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void connectionClient(){
+        try {
+            System.out.println("Клиент - " + countClient + " подключился");
+            outputStream = clientSocket.getOutputStream();
+            inputStream = clientSocket.getInputStream();
+            HandshakePacket handshakePacket = new HandshakePacket((byte)countClient++);
+            outputStream.write(handshakePacket.toByteArray());
+            outputStream.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

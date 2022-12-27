@@ -5,6 +5,7 @@ import controllers.MovePlayer;
 import entity.Field;
 import entity.FieldCell;
 import entity.Player;
+import handlers.ClientHandler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -31,6 +32,7 @@ public class ClientView extends Application {
     private Pane fieldPane;
     private ObjectMapper mapper = new ObjectMapper();
     private static int[] coordsSpawnPosition = new int[2];
+    private static ClientHandler clientHandler;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -51,6 +53,8 @@ public class ClientView extends Application {
         scene.setOnKeyPressed(movePlayer);
         stage.setScene(scene);
         stage.show();
+
+        waitingDataFromServer();
     }
 
     public List<FieldCell> createFieldCell(String type){
@@ -75,9 +79,22 @@ public class ClientView extends Application {
         movePlayer = new MovePlayer(player, collisionPlayer, this);
     }
 
-    public void showView(int[] coordsForSpawn){
+    public void showView(int[] coordsForSpawn, ClientHandler clientHandler){
         coordsSpawnPosition = coordsForSpawn;
         launch();
+    }
+
+    public void waitingDataFromServer(){
+        new Thread(() -> {
+            while(true){
+                System.out.println("Жду");
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }).start();
     }
 
 }

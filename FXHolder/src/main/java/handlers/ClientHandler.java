@@ -35,9 +35,10 @@ public class ClientHandler{
 
             System.out.println("Ожидание игроков");
             readInput(clientSocket.getSocket().getInputStream());
+            System.out.println("Игра началась!");
 
             this.clientView = new ClientView();
-            clientView.showView(coordsForSpawn[clientId]);
+            clientView.showView(coordsForSpawn[clientId], this);
 
             while (!clientSocket.getSocket().isClosed()) {
 
