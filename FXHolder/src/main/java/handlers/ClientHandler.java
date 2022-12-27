@@ -1,39 +1,50 @@
 package handlers;
 
-import exceptions.SocketConnectionError;
-import protocol.packets.BombPacket;
 import protocol.packets.Packet;
-import sockets.ClientSocket;
+import handlers.sockets.ClientSocket;
 import view.ClientView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.Scanner;
 
 public class ClientHandler{
 
+    private int MAX_PLAYERS = 2;
     private ClientSocket clientSocket;
     private byte clientId;
+
+    private ClientView clientView;
     private int[][] coordsForSpawn = new int[][] {
-            {80, 80}, {300, 300}
+            {120, 120}, {300, 300}
     };
 
 
     public ClientHandler(int port, String url) {
-        //try {
-            clientSocket = new ClientSocket(url, port);
-            //clientId = clientSocket.getSocket().getInputStream().read();
+        try {
+            this.clientSocket = new ClientSocket(url, port);
+            clientId = readInput(clientSocket.getSocket().getInputStream())[3];
+            System.out.println("Вы успешно подключились к серверу с id " + clientId);
 
-        /*} catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
-        }*/
+        }
     }
 
-    public void start(){
-        new ClientView().showView(coordsForSpawn[clientId]);
+    public void start() {
+        try {
+
+            System.out.println("Ожидание игроков");
+            readInput(clientSocket.getSocket().getInputStream());
+
+            this.clientView = new ClientView();
+            clientView.showView(coordsForSpawn[clientId]);
+
+            while (!clientSocket.getSocket().isClosed()) {
+
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private byte[] readInput(InputStream stream) throws IOException {
@@ -42,11 +53,10 @@ public class ClientHandler{
         int counter = 0;
         while ((b = stream.read()) > -1) {
             buffer[counter++] = (byte) b;
-            System.out.println(buffer);
             if (counter >= buffer.length) {
                 buffer = extendArray(buffer);
             }
-            if (counter > 1 && Packet.isEndOfPacket(buffer, counter - 1)) {
+            if (counter > 1 && Packet.isEndOfPacket(buffer, counter )) {
                 break;
             }
         }

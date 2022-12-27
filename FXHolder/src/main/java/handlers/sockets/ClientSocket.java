@@ -1,4 +1,4 @@
-package sockets;
+package handlers.sockets;
 
 import lombok.Data;
 

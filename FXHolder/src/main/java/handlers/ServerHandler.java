@@ -1,5 +1,7 @@
 package handlers;
 
+import handlers.sockets.ClientSocket;
+import protocol.packets.HandshakePacket;
 import protocol.packets.Packet;
 
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class ServerHandler implements Runnable{
+    private static final int MAX_PLAYERS = 2;
     private Integer port;
     private ServerSocket serverSocket;
     private ArrayList<Socket> socketList = new ArrayList<>();
@@ -21,6 +24,8 @@ public class ServerHandler implements Runnable{
     private OutputStream outputStream;
 
     private static int countClient = 0;
+
+
 
 
     private ServerHandler() {}
@@ -44,20 +49,21 @@ public class ServerHandler implements Runnable{
             System.out.println("Клиент - " + countClient + " подключился");
             outputStream = clientSocket.getOutputStream();
             inputStream = clientSocket.getInputStream();
-            outputStream.write(countClient++);
+            HandshakePacket handshakePacket = new HandshakePacket((byte)countClient++);
+            outputStream.write(handshakePacket.toByteArray());
             outputStream.flush();
 
             while (!serverSocket.isClosed()){
 
-                if(!socketList.contains(clientSocket)){
+                if(!socketList.contains(clientSocket) && socketList.size() <= MAX_PLAYERS){
                     socketList.add(clientSocket);
                 }
 
-                System.out.println(readInput(clientSocket.getInputStream()));
+                sendMessageToAllClients(new HandshakePacket((byte) 0).toByteArray());
 
-                outputStream.write(null);
+                /*outputStream.write(null);
                 outputStream.flush();
-                serverPool.notifyAll();
+                serverPool.notifyAll();*/
             }
 
         } catch (IOException e) {
@@ -65,7 +71,16 @@ public class ServerHandler implements Runnable{
         }
     }
 
+    public void sendMessage(Socket socket, byte[] message) throws IOException {
+        socket.getOutputStream().write(message);
+        socket.getOutputStream().flush();
+    }
 
+    public void sendMessageToAllClients(byte[] message) throws IOException {
+        for(Socket socket: socketList){
+            sendMessage(socket, message);
+        }
+    }
 
 
     private byte[] readInput(InputStream stream) throws IOException {
