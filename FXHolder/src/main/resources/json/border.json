@@ -9,7 +9,19 @@
     "image": "images/stone.png",
     "type": 2,
     "posX": 0,
+    "posY": 50
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
     "posY": 100
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 150
   },
   {
     "image": "images/stone.png",
@@ -21,7 +33,43 @@
     "image": "images/stone.png",
     "type": 2,
     "posX": 0,
+    "posY": 250
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
     "posY": 300
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 350
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 400
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 450
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 50,
+    "posY": 0
   },
   {
     "image": "images/stone.png",
@@ -32,7 +80,7 @@
   {
     "image": "images/stone.png",
     "type": 2,
-    "posX": 100,
+    "posX": 150,
     "posY": 0
   },
   {
@@ -44,7 +92,195 @@
   {
     "image": "images/stone.png",
     "type": 2,
+    "posX": 250,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
     "posX": 300,
     "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 350,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 400,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 450,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 500,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 550,
+    "posY": 0
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 0
+  },
+
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 50
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 100
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 150
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 200
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 250
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 300
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 350
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 400
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 450
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 50,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 100,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 150,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 200,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 250,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 300,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 350,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 0,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 400,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 450,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 500,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 550,
+    "posY": 500
+  },
+  {
+    "image": "images/stone.png",
+    "type": 2,
+    "posX": 600,
+    "posY": 500
   }
+
 ]

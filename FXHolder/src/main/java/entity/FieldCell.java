@@ -32,7 +32,7 @@ public class FieldCell {
         this.type = type;
         this.posX = posX;
         this.posY = posY;
-        this.rectangle = new Rectangle(100,100);
+        this.rectangle = new Rectangle(50,50);
         rectangle.setFill(new ImagePattern(new Image(pathImage)));
         rectangle.setX(posX);
         rectangle.setY(posY);
