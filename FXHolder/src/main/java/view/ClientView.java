@@ -63,7 +63,7 @@ public class ClientView extends Application {
     }
 
     public void createPlayer(){
-        Player player = new Player(new Rectangle(120, 120, 40, 40), new Image(PATH_PLAYER_IMAGE));
+        Player player = new Player(new Rectangle(120, 120, 80, 80), new Image(PATH_PLAYER_IMAGE));
 
         Rectangle collisionPlayer = new Rectangle(player.getBody().getWidth(), player.getBody().getHeight());
         collisionPlayer.setOpacity(0.0);

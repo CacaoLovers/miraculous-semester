@@ -1,13 +1,17 @@
 package protocol.packets;
 
+import javafx.scene.input.KeyCode;
 import protocol.PacketTypes;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 public class HandshakePacket extends Packet{
-    public HandshakePacket() {
+
+    private byte playerId;
+
+    public HandshakePacket(byte playerId) {
         super(PacketTypes.START);
+        this.playerId = playerId;
     }
 
     @Override
@@ -15,8 +19,7 @@ public class HandshakePacket extends Packet{
         try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
             writer.write(new byte[] {HEADER_1, HEADER_2});
             writer.write(type);
-
-
+            writer.write(playerId);
             writer.write(new byte[] {FOOTER_1, FOOTER_2});
             return writer.toByteArray();
         } catch (IOException e) {
@@ -25,7 +28,8 @@ public class HandshakePacket extends Packet{
     }
 
 
+
     public static HandshakePacket fromByteArray(byte[] data) {
-        return new HandshakePacket();
+        return new HandshakePacket(data[3]);
     }
 }
