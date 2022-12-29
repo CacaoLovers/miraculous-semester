@@ -4,18 +4,22 @@ package entity;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
+
+@Builder
+@Data
 public class Player {
+
     private Rectangle body;
     private Image image;
 
-    public Player(Rectangle rectangle, Image image){
-        body = rectangle;
-        this.image = image;
-        rectangle.setFill(new ImagePattern(image));
-    }
+    private Integer playerId;
 
-    public Rectangle getBody() {
-        return body;
-    }
+    private Double posX;
+    private Double posY;
+
+
 }
