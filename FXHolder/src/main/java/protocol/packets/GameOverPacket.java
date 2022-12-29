@@ -8,15 +8,18 @@ import java.io.IOException;
 
 
 public class GameOverPacket extends Packet{
-    private byte winnerId;
+    private byte winner;
 
-    public GameOverPacket(byte winnerId) {
+    public static final byte OWNER = 0;
+    public static final byte ENEMY = 1;
+
+    public GameOverPacket(byte winner) {
         super(PacketTypes.GAME_OVER);
-        this.winnerId = winnerId;
+        this.winner = winner;
     }
 
     public byte getWinnerId() {
-        return winnerId;
+        return winner;
     }
 
     @Override
@@ -24,7 +27,7 @@ public class GameOverPacket extends Packet{
         try (ByteArrayOutputStream writer = new ByteArrayOutputStream()) {
             writer.write(new byte[] {HEADER_1, HEADER_2});
             writer.write(type);
-            writer.write(winnerId);
+            writer.write(winner);
 
             writer.write(new byte[] {FOOTER_1, FOOTER_2});
             return writer.toByteArray();
