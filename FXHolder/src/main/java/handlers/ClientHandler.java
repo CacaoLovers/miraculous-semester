@@ -1,28 +1,53 @@
 package handlers;
 
+import controllers.EnemyPlaceBomb;
+import controllers.MoveEnemy;
+import controllers.PlaceBomb;
+import entity.Player;
+import javafx.scene.shape.Rectangle;
+import lombok.Data;
+import protocol.PacketTypes;
+import protocol.packets.HandshakePacket;
+import protocol.packets.MovePacket;
 import protocol.packets.Packet;
-import handlers.sockets.ClientSocket;
 import view.ClientView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 
+
+@Data
 public class ClientHandler{
 
     private int MAX_PLAYERS = 2;
-    private ClientSocket clientSocket;
+    private Socket clientSocket;
     private byte clientId;
 
     private ClientView clientView;
+
+    private InputStream inputStream;
+    private OutputStream outputStream;
     private int[][] coordsForSpawn = new int[][] {
-            {120, 120}, {300, 300}
+            {50, 100}, {450, 450}
     };
 
 
     public ClientHandler(int port, String url) {
         try {
-            this.clientSocket = new ClientSocket(url, port);
-            clientId = readInput(clientSocket.getSocket().getInputStream())[3];
+            this.clientSocket = new Socket(url, port);
+            this.inputStream = clientSocket.getInputStream();
+            this.outputStream = clientSocket.getOutputStream();
+
+            byte[] packet = readInput(inputStream);
+            if(packet[2] != PacketTypes.HANDSHAKE) {
+                throw new IllegalArgumentException("No way... Wrong type");
+            }
+
+            HandshakePacket handshakePacket = HandshakePacket.fromByteArray(packet);
+
+            clientId = handshakePacket.getPlayerId();
             System.out.println("Вы успешно подключились к серверу с id " + clientId);
 
         } catch (IOException e) {
@@ -30,25 +55,35 @@ public class ClientHandler{
         }
     }
 
+
+
     public void start() {
+        clientView = new ClientView();
+        if(clientId != 0) {
+            coordsForSpawn = new int[][] {{450, 450}, {50, 100}};
+        }
+        clientView.showView(coordsForSpawn, this, clientId);
+    }
+
+    public void sendPacket(Packet packet){
         try {
-
-            System.out.println("Ожидание игроков");
-            readInput(clientSocket.getSocket().getInputStream());
-            System.out.println("Игра началась!");
-
-            this.clientView = new ClientView();
-            clientView.showView(coordsForSpawn[clientId], this);
-
-            while (!clientSocket.getSocket().isClosed()) {
-
-            }
+            outputStream.write(packet.toByteArray());
+            outputStream.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private byte[] readInput(InputStream stream) throws IOException {
+    public void gameOver() {
+        try {
+            System.out.println("Игра завершена");
+            clientSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public byte[] readInput(InputStream stream) throws IOException {
         int b;
         byte[] buffer = new byte[10];
         int counter = 0;
@@ -66,7 +101,7 @@ public class ClientHandler{
         return data;
     }
 
-    private byte[] extendArray(byte[] oldArray) {
+    public byte[] extendArray(byte[] oldArray) {
         int oldSize = oldArray.length;
         byte[] newArray = new byte[oldSize * 2];
         System.arraycopy(oldArray, 0, newArray, 0, oldSize);
