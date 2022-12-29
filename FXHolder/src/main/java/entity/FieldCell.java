@@ -22,17 +22,26 @@ public class FieldCell {
     @JsonIgnore
     private Rectangle rectangle;
 
+    private byte blockId;
+
 
     @JsonCreator
     public FieldCell(@JsonProperty("image") String pathImage,
                      @JsonProperty("type") Integer type,
                      @JsonProperty("posX") Integer posX,
-                     @JsonProperty("posY") Integer posY){
+                     @JsonProperty("posY") Integer posY,
+                     @JsonProperty("id") byte blockId){
         this.image = pathImage;
         this.type = type;
         this.posX = posX;
         this.posY = posY;
-        this.rectangle = new Rectangle(50,50);
+        this.blockId = blockId;
+        if(this.type != 1) {
+            this.rectangle = new Rectangle(49,49);
+        }
+        else {
+            this.rectangle = new Rectangle(50, 50);
+        }
         rectangle.setFill(new ImagePattern(new Image(pathImage)));
         rectangle.setX(posX);
         rectangle.setY(posY);

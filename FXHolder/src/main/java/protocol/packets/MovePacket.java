@@ -1,10 +1,10 @@
 package protocol.packets;
 
 import javafx.scene.input.KeyCode;
+import lombok.Data;
 import protocol.PacketTypes;
 
 import java.io.*;
-
 
 public class MovePacket extends Packet{
 
@@ -44,10 +44,10 @@ public class MovePacket extends Packet{
             throw new IllegalArgumentException("Unacceptable packet");
         }
 
-        MovePacket packet = new MovePacket(data[2], data[3]);
+        MovePacket packet = new MovePacket(data[3], data[4]);
+        packet.direction = data[4];
+        packet.playerId = data[3];
 
         return packet;
     }
-
-
 }

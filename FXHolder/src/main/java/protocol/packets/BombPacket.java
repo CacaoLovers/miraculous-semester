@@ -8,6 +8,7 @@ import java.io.IOException;
 public class BombPacket extends Packet{
     private byte playerId;
 
+
     public BombPacket(byte playerId) {
         super(PacketTypes.BOMB);
         this.playerId = playerId;

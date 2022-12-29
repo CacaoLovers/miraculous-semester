@@ -1,6 +1,7 @@
 package protocol.packets;
 
 import javafx.scene.input.KeyCode;
+import lombok.Data;
 import protocol.PacketTypes;
 
 import java.io.*;
@@ -10,7 +11,7 @@ public class HandshakePacket extends Packet{
     private byte playerId;
 
     public HandshakePacket(byte playerId) {
-        super(PacketTypes.START);
+        super(PacketTypes.HANDSHAKE);
         this.playerId = playerId;
     }
 
@@ -31,5 +32,9 @@ public class HandshakePacket extends Packet{
 
     public static HandshakePacket fromByteArray(byte[] data) {
         return new HandshakePacket(data[3]);
+    }
+
+    public byte getPlayerId() {
+        return playerId;
     }
 }
