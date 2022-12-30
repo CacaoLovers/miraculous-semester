@@ -34,8 +34,4 @@ public class BombPacket extends Packet{
         }
         return new BombPacket(data[3]);
     }
-
-    public int getPlayerId() {
-        return playerId;
-    }
 }

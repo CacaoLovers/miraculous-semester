@@ -169,7 +169,7 @@ public class ClientView extends Application {
                 fieldPane.getChildren().add(bomb);
             });
             try {
-                Thread.sleep(1500);
+                Thread.sleep(2500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
