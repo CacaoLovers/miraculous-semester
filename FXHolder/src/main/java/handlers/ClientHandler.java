@@ -1,14 +1,8 @@
 package handlers;
 
-import controllers.EnemyPlaceBomb;
-import controllers.MoveEnemy;
-import controllers.PlaceBomb;
-import entity.Player;
-import javafx.scene.shape.Rectangle;
 import lombok.Data;
 import protocol.PacketTypes;
 import protocol.packets.HandshakePacket;
-import protocol.packets.MovePacket;
 import protocol.packets.Packet;
 import view.ClientView;
 

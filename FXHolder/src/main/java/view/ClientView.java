@@ -68,19 +68,6 @@ public class ClientView extends Application {
     private static Stage stage;
     private static Scene scene;
 
-
-    public boolean isGaming(){
-        return isGaming;
-    }
-
-    public void setGaming(boolean gaming){
-        isGaming = gaming;
-    }
-
-    public static Player getClient() {
-        return client;
-    }
-
     @Override
     public void start(Stage stage) throws IOException {
         field = new Field();
@@ -282,6 +269,14 @@ public class ClientView extends Application {
                 }
             }
         }).start();
+    }
+
+    public boolean isGaming(){
+        return isGaming;
+    }
+
+    public void setGaming(boolean gaming){
+        isGaming = gaming;
     }
 }
 

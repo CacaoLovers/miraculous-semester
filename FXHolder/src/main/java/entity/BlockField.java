@@ -1,11 +1,7 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import javafx.scene.image.Image;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 import lombok.Data;
 
 @Data

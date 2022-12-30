@@ -24,14 +24,6 @@ public class PlaceBomb implements EventHandler<KeyEvent> {
 
     private byte clientId;
 
-    public PlaceBomb(Player player, Rectangle collisionRectangle, ClientView application, ClientHandler clientHandler, byte clientId) {
-        this.player = player;
-        this.collisionRectangle = collisionRectangle;
-        this.application = application;
-        this.clientHandler = clientHandler;
-        this.clientId = clientId;
-    }
-
     @Override
     public void handle(KeyEvent keyEvent) {
         if (application.isGaming()) {
@@ -68,5 +60,13 @@ public class PlaceBomb implements EventHandler<KeyEvent> {
 
     public static void setBombHasPlant(boolean bombHasPlant) {
         PlaceBomb.bombHasPlant = bombHasPlant;
+    }
+
+    public PlaceBomb(Player player, Rectangle collisionRectangle, ClientView application, ClientHandler clientHandler, byte clientId) {
+        this.player = player;
+        this.collisionRectangle = collisionRectangle;
+        this.application = application;
+        this.clientHandler = clientHandler;
+        this.clientId = clientId;
     }
 }

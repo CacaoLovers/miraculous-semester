@@ -5,7 +5,6 @@ import entity.BlockField;
 import entity.Field;
 import entity.Player;
 import protocol.packets.HandshakePacket;
-import protocol.packets.Packet;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -31,8 +30,6 @@ public class ServerHandler implements Runnable{
     private static ArrayList<Player> players = new ArrayList<>();
     private static ArrayList<ClientSocket> clientSockets = new ArrayList<>();
 
-    private Socket clientSocket;
-    private ThreadPoolExecutor serverPool;
 
     private static int countClient = 0;
 
@@ -54,7 +51,6 @@ public class ServerHandler implements Runnable{
             ServerHandler server = new ServerHandler();
             server.port = port;
             server.serverSocket = new ServerSocket(port);
-            server.serverPool = serverPool;
             fieldCells.addAll(createFieldCell(PATH_GROUND_SPRITE));
             fieldCells.addAll(createFieldCell(PATH_BORDER_SPRITE));
             fieldCells.addAll(createFieldCell(PATH_WALL_SPRITE));
@@ -119,46 +115,5 @@ public class ServerHandler implements Runnable{
             }
         }
     }
-
-    public void sendMessageToAllClients(byte[] message) throws IOException {
-        for(Socket socketGetter: sockets) {
-            OutputStream clientOutput = null;
-            try {
-                clientOutput = socketGetter.getOutputStream();
-                clientOutput.write(message);
-                clientOutput.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-
-
-    private byte[] readInput(InputStream stream) throws IOException {
-        int b;
-        byte[] buffer = new byte[10];
-        int counter = 0;
-        while ((b = stream.read()) > -1) {
-            buffer[counter++] = (byte) b;
-            if (counter >= buffer.length) {
-                buffer = extendArray(buffer);
-            }
-            if (counter > 1 && Packet.isEndOfPacket(buffer, counter )) {
-                break;
-            }
-        }
-        byte[] data = new byte[counter];
-        System.arraycopy(buffer, 0, data, 0, counter);
-        return data;
-    }
-
-    private byte[] extendArray(byte[] oldArray) {
-        int oldSize = oldArray.length;
-        byte[] newArray = new byte[oldSize * 2];
-        System.arraycopy(oldArray, 0, newArray, 0, oldSize);
-        return newArray;
-    }
-
 
 }
