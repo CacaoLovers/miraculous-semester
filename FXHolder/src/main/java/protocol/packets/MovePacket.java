@@ -5,7 +5,7 @@ import lombok.Data;
 import protocol.PacketTypes;
 
 import java.io.*;
-
+@Data
 public class MovePacket extends Packet{
 
     private byte playerId;
